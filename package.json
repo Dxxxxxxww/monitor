@@ -1,0 +1,30 @@
+{
+  "name": "monitor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node script/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dxxxxxxww/monitor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dxxxxxxww/monitor/issues"
+  },
+  "homepage": "https://github.com/Dxxxxxxww/monitor#readme",
+  "devDependencies": {
+    "inquirer": "^9.0.1",
+    "plop": "^3.1.1",
+    "rollup": "^2.77.0",
+    "typescript": "^4.7.4",
+    "zx": "^7.0.7"
+  },
+  "description": ""
+}
