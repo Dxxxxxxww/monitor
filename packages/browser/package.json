@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "buildOptions": {
-    "name": "@monitor/browser",
+    "name": "MonitorBrowser",
     "formats": [
       "es",
       "cjs"

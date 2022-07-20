@@ -8,10 +8,10 @@ const resolve = (p) => {
   return path.resolve(`${__dirname}/packages/${pkg}`, p);
 };
 
-const { buildOptions } = await import(resolve('package.json'));
+// const { buildOptions } = await import(resolve('package.json'));
 
 const formatMap = {
-  esm: {
+  es: {
     file: resolve(`dist/${pkg}.es.js`),
     format: 'es',
   },
@@ -30,7 +30,6 @@ const formatMap = {
 };
 
 const createConfig = (output) => {
-  output.name = buildOptions.name
   return {
     input: resolve('src/index.js'),
     output,
@@ -43,4 +42,13 @@ const createConfig = (output) => {
   };
 };
 
-export default buildOptions.formats.map((format) => createConfig(formatMap[format]));
+// export default buildOptions.formats.map((format) => createConfig(formatMap[format]));
+
+module.exports = (async () => {
+  const { buildOptions } = await import(resolve('package.json'));
+
+  // Would be how you set the "exports"
+  return buildOptions.formats.map((format) =>
+    createConfig({ ...formatMap[format], name: buildOptions.name })
+  );
+})();

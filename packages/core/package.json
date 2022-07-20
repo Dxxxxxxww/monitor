@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "buildOptions": {
-    "name": "@monitor/core",
+    "name": "MonitorCore",
     "formats": [
       "es",
       "cjs",
