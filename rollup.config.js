@@ -1,10 +1,12 @@
 import json from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
 import path from 'node:path';
 
 const pkg = process.env.TARGET;
 
 const resolve = (p) => {
+  console.log('path:::', path.resolve(`${__dirname}/packages/${pkg}`, p));
   return path.resolve(`${__dirname}/packages/${pkg}`, p);
 };
 
@@ -31,13 +33,15 @@ const formatMap = {
 
 const createConfig = (output) => {
   return {
-    input: resolve('src/index.js'),
+    input: resolve('src/index.ts'),
     output,
     plugins: [
+      typescript({
+        tsconfig: resolve('./tsconfig.json'),
+      }),
+      nodeResolve(),
       // 可以从 json 中导入数据的插件
       json(),
-      // 从 node_modules 中引入第三方模块
-      nodeResolve(),
     ],
   };
 };

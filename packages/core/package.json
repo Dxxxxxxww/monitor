@@ -2,7 +2,8 @@
   "name": "@monitor/core",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/core.umd.js",
+  "module": "dist/core.es.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

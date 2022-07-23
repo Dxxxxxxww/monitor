@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "src/**/*"
+  ],
+  "compilerOptions": {
+    "module": "es6",
+    "outDir": "esm",
+    "paths": {
+      "@fe-monitor/core": [
+        "../core/src"
+      ]
+    }
+  },
+}
