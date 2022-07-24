@@ -5,11 +5,6 @@
   ],
   "compilerOptions": {
     "module": "es6",
-    "outDir": "esm",
-    "paths": {
-      "@fe-monitor/core": [
-        "../core/src"
-      ]
-    }
+    "outDir": "esm"
   },
 }

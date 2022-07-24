@@ -13,17 +13,19 @@ importers:
       prettier: ^2.7.1
       rimraf: ^3.0.2
       rollup: ^2.77.0
+      tslib: ^2.4.0
       typescript: ^4.7.4
     devDependencies:
       '@rollup/plugin-dynamic-import-vars': 1.4.3_rollup@2.77.0
       '@rollup/plugin-json': 4.1.0_rollup@2.77.0
       '@rollup/plugin-node-resolve': 13.3.0_rollup@2.77.0
-      '@rollup/plugin-typescript': 8.3.3_55kiftncucr43pz4hskma6yi2q
+      '@rollup/plugin-typescript': 8.3.3_sbpikdwgo7pbmeew3vug7t5zyu
       eslint: 8.20.0
       execa: 6.1.0
       prettier: 2.7.1
       rimraf: 3.0.2
       rollup: 2.77.0
+      tslib: 2.4.0
       typescript: 4.7.4
 
   packages/browser:
@@ -124,7 +126,7 @@ packages:
       rollup: 2.77.0
     dev: true
 
-  /@rollup/plugin-typescript/8.3.3_55kiftncucr43pz4hskma6yi2q:
+  /@rollup/plugin-typescript/8.3.3_sbpikdwgo7pbmeew3vug7t5zyu:
     resolution: {integrity: sha512-55L9SyiYu3r/JtqdjhwcwaECXP7JeJ9h1Sg1VWRJKIutla2MdZQodTgcCNybXLMCnqpNLEhS2vGENww98L1npg==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -138,6 +140,7 @@ packages:
       '@rollup/pluginutils': 3.1.0_rollup@2.77.0
       resolve: 1.22.1
       rollup: 2.77.0
+      tslib: 2.4.0
       typescript: 4.7.4
     dev: true
 
@@ -891,6 +894,10 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
+    dev: true
+
+  /tslib/2.4.0:
+    resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
     dev: true
 
   /type-check/0.4.0:

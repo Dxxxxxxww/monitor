@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/core.umd.js",
-  "module": "dist/core.es.js",
+  "module": "esm/core.es.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf packages/**/dist && rollup -c"
   },
   "keywords": [],
   "author": "",
   "buildOptions": {
     "name": "MonitorCore",
     "formats": [
-      "es",
       "cjs",
       "iife",
       "umd"
