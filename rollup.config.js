@@ -1,6 +1,6 @@
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import path from 'node:path';
 
 const pkg = process.env.TARGET;

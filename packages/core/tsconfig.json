@@ -1,10 +1,35 @@
 {
-  "extends": "../../tsconfig.json",
   "include": [
     "src/**/*"
   ],
   "compilerOptions": {
     "module": "es6",
-    "outDir": "esm"
+    "outDir": "esm",
+    "alwaysStrict": true,
+    "declaration": true,
+    "declarationMap": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "inlineSources": true,
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "moduleResolution": "node",
+    "noEmitHelpers": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveWatchOutput": true,
+    "pretty": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictBindCallApply": false,
+    "target": "es2020",
+    "noErrorTruncation": true,
+    "allowSyntheticDefaultImports": true
   },
 }
