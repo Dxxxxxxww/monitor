@@ -45,6 +45,7 @@ const createConfig = (output) => {
       typescript({
         tsconfig: tspath,
       }),
+      // 引入其他子包
       nodeResolve(),
       // 可以从 json 中导入数据的插件
       json(),
@@ -54,7 +55,7 @@ const createConfig = (output) => {
 
 // export default buildOptions.formats.map((format) => createConfig(formatMap[format]));
 
-module.exports = (async () => {
+const config = (async () => {
   const { buildOptions } = await import(resolve('package.json'));
 
   // Would be how you set the "exports"
@@ -62,3 +63,5 @@ module.exports = (async () => {
     createConfig({ ...formatMap[format], name: buildOptions.name })
   );
 })();
+
+export default config;

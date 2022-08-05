@@ -12,6 +12,7 @@
   "buildOptions": {
     "name": "MonitorBrowser",
     "formats": [
+      "es",
       "cjs",
       "umd"
     ]
