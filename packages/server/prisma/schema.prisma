@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+// 用户表，登录用户和管理用户
+model User {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique @db.VarChar(255)
+  password      String    @db.VarChar(255)
+  id_card_num   String?   @db.VarChar(255)
+  name          String?   @db.VarChar(255)
+  // 0 2 4 8 16 32 权限字段
+  role          Int
+  created       DateTime  @db.DateTime()
+  updated       DateTime  @updatedAt
+}
+// 项目表
+model Project {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique @db.VarChar(255)
+  content       String?   @db.VarChar(255)
+  created       DateTime  @db.DateTime()
+  updated       DateTime  @updatedAt
+}
+
+// 错误上送表
+model ErrorMsg {
+  id            Int       @id @default(autoincrement())
+  user_id       Int       
+  project_id    Int       
+  url           String    @db.VarChar(255)
+  content       String    @db.VarChar(255)
+  row           Int
+  line          Int
+  created       DateTime  @db.DateTime()
+}
