@@ -6,8 +6,14 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf packages/**/dist && node script/bundle.js"
+    "test:browser": "pnpm link --dir examples/browser",
+    "dev": "pnpm -r --filter=@monitor-backend/backend run dev",
+    "build:backend": "pnpm -r --filter=@monitor-server/server run build",
+    "build:bundle": "pnpm -r --filter=@monitor-fe/* run build:bundle",
+    "build:esm": "pnpm -r --filter=@monitor-fe/* run build:esm",
+    "build": "pnpm build:esm && pnpm build:bundle",
+    "clean": "pnpm -r --filter=@monitor-*/* run clean",
+    "clean:node_modules": "rimraf **/node_modules"
   },
   "repository": {
     "type": "git",
@@ -21,6 +27,7 @@
   },
   "homepage": "https://github.com/Dxxxxxxww/monitor#readme",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-dynamic-import-vars": "^1.4.3",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
@@ -28,6 +35,7 @@
     "esbuild": "^0.14.50",
     "eslint": "^8.20.0",
     "execa": "^6.1.0",
+    "http-server": "^14.1.1",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.77.0",

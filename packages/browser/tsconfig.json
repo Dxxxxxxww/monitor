@@ -1,15 +1,12 @@
 {
   "extends": "../../tsconfig.json",
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "module": "es6",
     "outDir": "esm",
+    "baseUrl": ".",
     "paths": {
-      "@monitor/core": [
-        "../core/src"
-      ]
-    },
-  },
+      "@monitor-fe/core": ["../core/src"]
+    }
+  }
 }

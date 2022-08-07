@@ -1,22 +1,18 @@
 {
-  "name": "@monitor/core",
+  "name": "@monitor-fe/core",
   "version": "1.0.0",
   "description": "",
   "main": "dist/core.umd.js",
   "module": "esm/core.es.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf packages/**/dist && rollup -c"
+    "build": "run -p build:bundle build:esm",
+    "build:bundle": "rimraf dist && rollup --config",
+    "build:esm": "rimraf esm && tsc -p tsconfig.json"
   },
   "keywords": [],
   "author": "",
-  "buildOptions": {
-    "name": "MonitorCore",
-    "formats": [
-      "es",
-      "cjs",
-      "iife",
-      "umd"
-    ]
-  }
+  "files": [
+    "dist",
+    "esm"
+  ]
 }

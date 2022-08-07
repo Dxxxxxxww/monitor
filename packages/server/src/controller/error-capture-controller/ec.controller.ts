@@ -12,5 +12,5 @@ export class ErrorCaptureController {
   }
 
   @Post()
-  async catchError(): Promise<T> {}
+  async catchError(): Promise<any> {}
 }
