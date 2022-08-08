@@ -11,7 +11,6 @@ export interface PluginEvent {
 export interface CoreOptions {
   projectId: string;
   hostname?: string;
-  config: {};
   plugins?: Plugin[];
 }
 
@@ -20,6 +19,7 @@ export abstract class Plugin {
   constructor(options?: object) {
     this.options = options;
   }
+  // config 和 options 的复杂冗余配置问题后续再优化
   abstract init(config: { onEvent: (event: PluginEvent) => void }): void;
 }
 
@@ -44,6 +44,7 @@ export abstract class Core {
   }
 
   checkQueue() {
+    // 报错优化，错误立即上报，性能监控积累上报
     const event = this.events.shift();
     if (event) {
       this.send(event);

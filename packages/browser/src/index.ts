@@ -1,9 +1,13 @@
 import { Core, Plugin, PluginEvent } from '@monitor-fe/core';
+import type { CoreOptions } from '@monitor-fe/core';
 import { localStore } from '../utils/storage';
 
+// @ts-ignore
 export const SDK_VERSION = __VERSION__;
 
+// @ts-ignore
 if (window.__FRONTEND_CONFIG__) {
+  // @ts-ignore
   init(window.__FRONTEND_CONFIG__.id, window.__FRONTEND_CONFIG__.options);
 }
 
@@ -32,16 +36,18 @@ export class BrowserCore extends Core {
 }
 
 export class JSErrorPlugin extends Plugin {
-  init(config: { onEvent: (event: PluginEvent) => void }): void {}
+  init(config: { onEvent: (event: PluginEvent) => void }): void {
+    config.onEvent()
+  }
 }
 
-export function init(options) {
+export function init(options: CoreOptions) {
   const bc = new BrowserCore({
-    projectId: 'browser1',
-    config: {},
-    hostname: '0.0.0.0',
+    projectId: options.projectId,
+    hostname: options.hostname,
     plugins: [new JSErrorPlugin()],
   });
+  bc.init();
 }
 
 // 排队优化
