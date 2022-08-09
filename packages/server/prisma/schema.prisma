@@ -37,7 +37,7 @@ model ErrorMsg {
   project_id    Int       
   url           String    @db.VarChar(255)
   content       String    @db.VarChar(255)
-  row           Int       @db.UnsignedInt
-  column        Int       @db.UnsignedInt
+  line_no       Int       @db.UnsignedInt
+  column_no     Int       @db.UnsignedInt
   created       DateTime  @db.DateTime()
 }

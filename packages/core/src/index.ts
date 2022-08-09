@@ -1,11 +1,12 @@
-export interface PluginEvent {
+export interface EventOption {
   type: 'error' | 'warn' | 'info';
-  message: string;
+  message: string | Event;
+  lineNo: number;
+  columnNo: number;
   stack: string;
   // 批量错误上报时需要分组
   priority: 3 | 2 | 1;
-  info: object;
-  created: string;
+  created?: string;
 }
 
 export interface CoreOptions {
@@ -20,13 +21,13 @@ export abstract class Plugin {
     this.options = options;
   }
   // config 和 options 的复杂冗余配置问题后续再优化
-  abstract init(config: { onEvent: (event: PluginEvent) => void }): void;
+  abstract init(config: { onEvent: (event: EventOption) => void }): void;
 }
 
 export abstract class Core {
   public options: CoreOptions;
   public plugins: Plugin[] = [];
-  public events: PluginEvent[] = [];
+  public events: EventOption[] = [];
 
   constructor(options: CoreOptions) {
     this.options = options;
@@ -52,7 +53,7 @@ export abstract class Core {
     }
   }
 
-  handleEvent(event: PluginEvent) {
+  handleEvent(event: EventOption) {
     if (this.events.length && event.priority > this.events[0].priority) {
       this.events.unshift(event);
     } else {
@@ -62,7 +63,7 @@ export abstract class Core {
     this.requestIdleCallback(this.checkQueue);
   }
 
-  abstract saveToCache(events: PluginEvent[]): void;
+  abstract saveToCache(events: EventOption[]): void;
   abstract requestIdleCallback(callback: () => void): void;
-  abstract send(event: PluginEvent): void;
+  abstract send(event: EventOption): void;
 }

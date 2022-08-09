@@ -1,4 +1,4 @@
-import { Core, Plugin, PluginEvent } from '@monitor-fe/core';
+import { Core, Plugin, EventOption } from '@monitor-fe/core';
 import type { CoreOptions } from '@monitor-fe/core';
 import { localStore } from '../utils/storage';
 
@@ -23,11 +23,11 @@ export class BrowserCore extends Core {
     requestIdleCallback(callback);
   }
   // 页面恢复过来后，还需要结合当前需要上送的数据进行优先级排布上送
-  saveToCache(events: PluginEvent[]): void {
+  saveToCache(events: EventOption[]): void {
     localStore.set('trackQueue', events);
   }
 
-  send(event: PluginEvent): void {
+  send(event: EventOption): void {
     if ('sendBeacon' in navigator) {
       navigator.sendBeacon('/event', JSON.stringify(event));
     } else {
@@ -36,8 +36,54 @@ export class BrowserCore extends Core {
 }
 
 export class JSErrorPlugin extends Plugin {
-  init(config: { onEvent: (event: PluginEvent) => void }): void {
-    config.onEvent()
+  init(config: { onEvent: (event: EventOption) => void }): void {
+    // config.onEvent();
+    // 资源加载错误 js/css/img
+    // 需要测试查看报错类型
+    window.addEventListener(
+      'error',
+      (e) => {
+        const resErr: BrowserResErrType = {
+          html: outerHTML,
+        };
+        config.onEvent({
+          type: 'error',
+          message: resErr,
+        });
+      },
+      true
+    );
+
+    // 常规js运行错误 异步错误
+    window.onerror = (message, _, lineNo, columnNo, error) => {
+      config.onEvent({
+        message,
+        lineNo: lineNo ?? 0,
+        columnNo: columnNo ?? 0,
+        stack: error?.stack ?? '',
+        type: 'error',
+        priority: 3,
+      });
+    };
+
+    // Promise错误
+    // promise 报错只有 type 和 reason 有用
+    window.addEventListener('unhandledrejection', (e) => {
+      let message: string;
+      if (typeof e.reason === 'string') {
+        message = e.reason;
+      } else if (typeof e.reason === 'object' && e.reason.stack) {
+        message = e.reason.stack;
+      }
+      const prErr: BrowserPrErrType = {
+        message,
+      };
+      this.processer.trackEvent({
+        type: 'promiseError',
+        msg: prErr,
+        time: getTimestamp(),
+      });
+    });
   }
 }
 
