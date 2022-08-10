@@ -1,4 +1,4 @@
-import { Core, Plugin, EventOption } from '@monitor-fe/core';
+import { Core, Plugin, ErrorOption, ErrorParameters } from '@monitor-fe/core';
 import type { CoreOptions } from '@monitor-fe/core';
 import { localStore } from '../utils/storage';
 
@@ -23,11 +23,11 @@ export class BrowserCore extends Core {
     requestIdleCallback(callback);
   }
   // 页面恢复过来后，还需要结合当前需要上送的数据进行优先级排布上送
-  saveToCache(events: EventOption[]): void {
+  saveToCache(events: ErrorOption[]): void {
     localStore.set('trackQueue', events);
   }
 
-  send(event: EventOption): void {
+  send(event: ErrorOption): void {
     if ('sendBeacon' in navigator) {
       navigator.sendBeacon('/event', JSON.stringify(event));
     } else {
@@ -36,16 +36,13 @@ export class BrowserCore extends Core {
 }
 
 export class JSErrorPlugin extends Plugin {
-  init(config: { onEvent: (event: EventOption) => void }): void {
+  init(config: { onEvent: (event: ErrorParameters) => void }): void {
     // config.onEvent();
     // 资源加载错误 js/css/img
-    // 需要测试查看报错类型
+    // type target(加载资源的标签) 有用，target.src target.href 可以使用target 的标签类型/标签名来判断是啥标签。src表示资源地址
     window.addEventListener(
       'error',
       (e) => {
-        const resErr: BrowserResErrType = {
-          html: outerHTML,
-        };
         config.onEvent({
           type: 'error',
           message: resErr,
@@ -62,12 +59,12 @@ export class JSErrorPlugin extends Plugin {
         columnNo: columnNo ?? 0,
         stack: error?.stack ?? '',
         type: 'error',
-        priority: 3,
       });
     };
 
     // Promise错误
     // promise 报错只有 type 和 reason 有用
+    // reason 就是 reject 出来的东西，any类型
     window.addEventListener('unhandledrejection', (e) => {
       let message: string;
       if (typeof e.reason === 'string') {

@@ -1,13 +1,24 @@
-export interface EventOption {
+export interface ErrorOption {
+  // 错误类型
   type: 'error' | 'warn' | 'info';
+  // 错误信息
   message: string | Event;
+  // 行号
   lineNo: number;
+  // 列号
   columnNo: number;
+  // 堆栈信息
   stack: string;
   // 批量错误上报时需要分组
   priority: 3 | 2 | 1;
-  created?: string;
+  // 创建时间
+  created: string;
 }
+
+export type ErrorParameters = Pick<
+  ErrorOption,
+  'type' | 'message' | 'lineNo' | 'columnNo' | 'stack'
+>;
 
 export interface CoreOptions {
   projectId: string;
@@ -21,13 +32,13 @@ export abstract class Plugin {
     this.options = options;
   }
   // config 和 options 的复杂冗余配置问题后续再优化
-  abstract init(config: { onEvent: (event: EventOption) => void }): void;
+  abstract init(config: { onEvent: (event: ErrorOption) => void }): void;
 }
 
 export abstract class Core {
   public options: CoreOptions;
   public plugins: Plugin[] = [];
-  public events: EventOption[] = [];
+  public events: ErrorOption[] = [];
 
   constructor(options: CoreOptions) {
     this.options = options;
@@ -53,7 +64,7 @@ export abstract class Core {
     }
   }
 
-  handleEvent(event: EventOption) {
+  handleEvent(event: ErrorOption) {
     if (this.events.length && event.priority > this.events[0].priority) {
       this.events.unshift(event);
     } else {
@@ -63,7 +74,7 @@ export abstract class Core {
     this.requestIdleCallback(this.checkQueue);
   }
 
-  abstract saveToCache(events: EventOption[]): void;
+  abstract saveToCache(events: ErrorOption[]): void;
   abstract requestIdleCallback(callback: () => void): void;
-  abstract send(event: EventOption): void;
+  abstract send(event: ErrorOption): void;
 }
