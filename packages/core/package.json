@@ -14,5 +14,8 @@
   "files": [
     "dist",
     "esm"
-  ]
+  ],
+  "dependencies": {
+    "@monitor-fe/types": "workspace:^1.0.0"
+  }
 }

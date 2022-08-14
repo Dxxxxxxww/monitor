@@ -1,4 +1,4 @@
-import { Core, Plugin, ErrorOption, ErrorParameters } from '@monitor-fe/core';
+import { Core, ErrorMessage, } from '@monitor-fe/core';
 import type { CoreOptions } from '@monitor-fe/core';
 import { localStore } from '../utils/storage';
 
@@ -23,11 +23,11 @@ export class BrowserCore extends Core {
     requestIdleCallback(callback);
   }
   // 页面恢复过来后，还需要结合当前需要上送的数据进行优先级排布上送
-  saveToCache(events: ErrorOption[]): void {
+  saveToCache(events: ErrorMessage[]): void {
     localStore.set('trackQueue', events);
   }
 
-  send(event: ErrorOption): void {
+  send(event: ErrorMessage): void {
     if ('sendBeacon' in navigator) {
       navigator.sendBeacon('/event', JSON.stringify(event));
     } else {
@@ -35,54 +35,6 @@ export class BrowserCore extends Core {
   }
 }
 
-export class JSErrorPlugin extends Plugin {
-  init(config: { onEvent: (event: ErrorParameters) => void }): void {
-    // config.onEvent();
-    // 资源加载错误 js/css/img
-    // type target(加载资源的标签) 有用，target.src target.href 可以使用target 的标签类型/标签名来判断是啥标签。src表示资源地址
-    window.addEventListener(
-      'error',
-      (e) => {
-        config.onEvent({
-          type: 'error',
-          message: resErr,
-        });
-      },
-      true
-    );
-
-    // 常规js运行错误 异步错误
-    window.onerror = (message, _, lineNo, columnNo, error) => {
-      config.onEvent({
-        message,
-        lineNo: lineNo ?? 0,
-        columnNo: columnNo ?? 0,
-        stack: error?.stack ?? '',
-        type: 'error',
-      });
-    };
-
-    // Promise错误
-    // promise 报错只有 type 和 reason 有用
-    // reason 就是 reject 出来的东西，any类型
-    window.addEventListener('unhandledrejection', (e) => {
-      let message: string;
-      if (typeof e.reason === 'string') {
-        message = e.reason;
-      } else if (typeof e.reason === 'object' && e.reason.stack) {
-        message = e.reason.stack;
-      }
-      const prErr: BrowserPrErrType = {
-        message,
-      };
-      this.processer.trackEvent({
-        type: 'promiseError',
-        msg: prErr,
-        time: getTimestamp(),
-      });
-    });
-  }
-}
 
 export function init(options: CoreOptions) {
   const bc = new BrowserCore({
