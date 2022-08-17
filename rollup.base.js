@@ -10,7 +10,7 @@ const plugins = [
     exclude: /node_modules/,
     sourceMap: true,
     minify: process.env.NODE_ENV === 'production',
-    target: 'es2015',
+    target: 'es2020',
     jsx: 'transform',
     jsxFactory: 'React.createElement',
     jsxFragment: 'React.Fragment',

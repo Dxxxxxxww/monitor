@@ -1,5 +1,6 @@
 import { BasePlugin } from '@monitor-fe/core';
 import { ErrorMessage } from '@monitor-fe/types';
+import { formatDate } from '@monitor-fe/share';
 
 // 获取 window.onerror 的参数类型
 type OnErrorParameters = Parameters<OnErrorEventHandlerNonNull>;
@@ -7,16 +8,7 @@ type OnErrorParameters = Parameters<OnErrorEventHandlerNonNull>;
 export class JSErrorPlugin extends BasePlugin {
   init(config: { onEvent: (event: ErrorMessage) => void }): void {
     // config.onEvent();
-    // 资源加载错误 js/css/img
-    // type target(加载资源的标签) 有用，target.src target.href 可以使用target 的标签类型/标签名来判断是啥标签。src表示资源地址
-    window.addEventListener(
-      'error',
-      (e) => {
-        const params = this.transform(e);
-        config.onEvent(params);
-      },
-      true
-    );
+
 
     // 常规js运行错误 异步错误
     window.onerror = (...args) => {
@@ -46,6 +38,16 @@ export class JSErrorPlugin extends BasePlugin {
   }
 
   transform(...args: OnErrorParameters): ErrorMessage {
-    return {};
+    const [event, _, lineno, colno, error] = args;
+
+    return {
+      type: 'error',
+      message: ((event as string) || error?.message) ?? '',
+      lineno,
+      colno,
+      stack: error?.stack,
+      priority: 3,
+      created: formatDate(new Date()),
+    };
   }
 }

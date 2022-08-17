@@ -41,10 +41,12 @@ importers:
   packages/browser:
     specifiers:
       '@monitor-fe/core': workspace:^1.0.0
+      '@monitor-fe/share': workspace:^1.0.0
       '@monitor-fe/types': workspace:^1.0.0
       lodash: ^4.17.21
     dependencies:
       '@monitor-fe/core': link:../core
+      '@monitor-fe/share': link:../share
       '@monitor-fe/types': link:../types
       lodash: 4.17.21
 
