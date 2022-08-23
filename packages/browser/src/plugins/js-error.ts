@@ -7,9 +7,6 @@ type OnErrorParameters = Parameters<OnErrorEventHandlerNonNull>;
 
 export class JSErrorPlugin extends BasePlugin {
   init(config: { onEvent: (event: ErrorMessage) => void }): void {
-    // config.onEvent();
-
-
     // 常规js运行错误 异步错误
     window.onerror = (...args) => {
       const formattedData = this.transform(...args);
