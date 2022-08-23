@@ -1,8 +1,9 @@
 import { CoreOptions, ErrorMessage } from '@monitor-fe/types';
+import { BasePluginsType } from '@monitor-fe/types/src';
 
 export abstract class Core {
   public options: CoreOptions;
-  public plugins: Plugin[] = [];
+  public plugins: BasePluginsType[] = [];
   public events: ErrorMessage[] = [];
 
   constructor(options: CoreOptions) {
@@ -15,7 +16,7 @@ export abstract class Core {
   init() {
     for (const plugin of this.plugins) {
       plugin.init({
-        onEvent: this.handleEvent,
+        onEvent: this.handleEvent
       });
     }
   }

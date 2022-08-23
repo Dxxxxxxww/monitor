@@ -32,11 +32,6 @@ export interface ErrorMessage {
   created: string | Date;
 }
 
-export type ErrorParameters = Pick<
-  ErrorMessage,
-  'type' | 'message' | 'lineNo' | 'columnNo' | 'stack'
->;
-
 export interface CoreOptions {
   projectId: string;
   hostname?: string;
@@ -45,5 +40,5 @@ export interface CoreOptions {
 
 export interface BasePluginsType {
   init(config: { onEvent: (event: ErrorMessage) => void }): void;
-  transform(e: Event | ErrorEvent): ErrorParameters;
+  transform(e: Event | ErrorEvent): ErrorMessage;
 }
